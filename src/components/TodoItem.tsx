@@ -50,6 +50,7 @@ export const TodoItem: React.FC<Props> = props => {
 
     if (todo.title === normalizedTitle) {
       setEditedTodoId(null);
+
       return;
     }
 

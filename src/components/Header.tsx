@@ -40,14 +40,12 @@ export const Header: React.FC<Props> = props => {
   };
 
   useEffect(() => {
-    inputRef?.current?.focus();
-  }, [todosLength]);
-
-  useEffect(() => {
     if (!isInputDisabled) {
       inputRef?.current?.focus();
+    } else if (todosLength !== undefined) {
+      inputRef?.current?.focus();
     }
-  }, [isInputDisabled]);
+  }, [todosLength, isInputDisabled]);
 
   return (
     <header className="todoapp__header">
