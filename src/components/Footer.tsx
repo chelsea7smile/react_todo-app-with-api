@@ -1,11 +1,10 @@
 import React from 'react';
 import { FilterStatus } from '../types/FilterStatus';
-import { Dispatch, SetStateAction } from 'react';
 import cn from 'classnames';
 
 type Props = {
   filterStatus: FilterStatus;
-  setFilterStatus: Dispatch<SetStateAction<FilterStatus>>;
+  setFilterStatus: (status: FilterStatus) => void;
   todosLeft: number;
   todosCompleted: number;
   onClearCompleted: () => Promise<void>;
@@ -30,7 +29,7 @@ export const Footer: React.FC<Props> = props => {
         {Object.values(FilterStatus).map(filter => (
           <a
             key={filter}
-            href={`#/${filter === FilterStatus.All ? '' : filter}`}
+            href={`#/${filter === FilterStatus.All && filter}`}
             className={cn('filter__link', {
               selected: filterStatus === filter,
             })}

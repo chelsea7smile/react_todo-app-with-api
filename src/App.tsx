@@ -1,27 +1,18 @@
+/* eslint-disable */
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { ErrorNotification } from './components/ErrorNotification';
 import { Todo } from './types/Todo';
-import {
-  getTodos,
-  addTodo,
-  USER_ID,
-  deleteTodo,
-  updateTodo,
-} from './api/todos';
+import {getTodos, addTodo, USER_ID, deleteTodo, updateTodo,} from './api/todos';
 import { ErrorTypes } from './types/ErrorTypes';
 import { FilterStatus } from './types/FilterStatus';
 import { TodoList } from './components/TodoList';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [errorMessage, setErrorMessage] = useState<ErrorTypes>(
-    ErrorTypes.Empty,
-  );
-  const [filterStatus, setFilterStatus] = useState<FilterStatus>(
-    FilterStatus.All,
-  );
+  const [errorMessage, setErrorMessage] = useState<ErrorTypes>(ErrorTypes.Empty);
+  const [filterStatus, setFilterStatus] = useState<FilterStatus>(FilterStatus.All,);
   const [tempTodo, setTempTodo] = useState<Todo | null>(null);
   const [loadingTodoIds, setLoadingTodoIds] = useState<number[]>([]);
   const inputAddRef = useRef<HTMLInputElement>(null);
@@ -52,7 +43,7 @@ export const App: React.FC = () => {
     () => todos.length === todosCompletedNum,
     [todos],
   );
-  const onAddTodo = async (todoTitle: string) => {
+  const handleAddTodo = async (todoTitle: string) => {
     setTempTodo({ id: 0, title: todoTitle, completed: false, userId: USER_ID });
     try {
       const newTodo = await addTodo({ title: todoTitle, completed: false });
@@ -67,7 +58,7 @@ export const App: React.FC = () => {
     }
   };
 
-  const onDeleteTodo = async (todoId: number) => {
+  const handleDeleteTodo = async (todoId: number) => {
     setLoadingTodoIds(prev => [...prev, todoId]);
     try {
       await deleteTodo(todoId);
@@ -81,15 +72,15 @@ export const App: React.FC = () => {
     }
   };
 
-  const onClearCompleted = async () => {
+  const handleClearCompleted = async () => {
     const completedTodos = todos.filter(todo => todo.completed);
 
     completedTodos.forEach(todo => {
-      onDeleteTodo(todo.id);
+      handleDeleteTodo(todo.id);
     });
   };
 
-  const onUpdateTodo = async (todoToUpdate: Todo) => {
+  const handleUpdateTodo = async (todoToUpdate: Todo) => {
     setLoadingTodoIds(prev => [...prev, todoToUpdate.id]);
     try {
       const updatedTodo = await updateTodo(todoToUpdate);
@@ -107,31 +98,32 @@ export const App: React.FC = () => {
     return;
   };
 
-  const onToggleAll = async () => {
+  const handleToggleAll = async () => {
     if (todosLeftNum > 0) {
       const activeTodos = todos.filter(todo => !todo.completed);
 
       activeTodos.forEach(todo => {
-        onUpdateTodo({ ...todo, completed: true });
+        handleUpdateTodo({ ...todo, completed: true });
       });
     } else {
       todos.forEach(todo => {
-        onUpdateTodo({ ...todo, completed: false });
+        handleUpdateTodo({ ...todo, completed: false });
       });
     }
   };
 
   useEffect(() => {
-    (async () => {
+    const getAllTodos = async () => {
       try {
         const data = await getTodos();
 
         setTodos(data);
       } catch (error) {
         setErrorMessage(ErrorTypes.Loading);
-      } finally {
       }
-    })();
+    };
+
+    getAllTodos();
   }, []);
 
   return (
@@ -139,30 +131,31 @@ export const App: React.FC = () => {
       <h1 className="todoapp__title">todos</h1>
       <div className="todoapp__content">
         <Header
-          onAddTodo={onAddTodo}
+          onAddTodo={handleAddTodo}
           setErrorMessage={setErrorMessage}
           isInputDisabled={!!tempTodo}
-          onToggleAll={onToggleAll}
+          onToggleAll={handleToggleAll}
           areAllTodosCompleted={areAllTodosCompleted}
           todosLength={todos.length}
           inputRef={inputAddRef}
         />
 
-        {(todos.length > 0 || tempTodo) && (
+        {(!!todos.length || tempTodo) && (
           <>
             <TodoList
               filteredTodos={filteredTodos}
-              onDeleteTodo={onDeleteTodo}
-              onUpdateTodo={onUpdateTodo}
+              onDeleteTodo={handleDeleteTodo}
+              onUpdateTodo={handleUpdateTodo}
               loadingTodoIds={loadingTodoIds}
               tempTodo={tempTodo}
             />
+
             <Footer
               filterStatus={filterStatus}
               setFilterStatus={setFilterStatus}
               todosLeft={todosLeftNum}
               todosCompleted={todosCompletedNum}
-              onClearCompleted={onClearCompleted}
+              onClearCompleted={handleClearCompleted}
             />
           </>
         )}

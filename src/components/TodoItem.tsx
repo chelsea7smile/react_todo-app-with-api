@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable */
 
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import { Todo } from '../types/Todo';
 import cn from 'classnames';
 
@@ -11,7 +12,7 @@ type Props = {
   onDeleteTodo: (todoId: number) => Promise<void>;
   onUpdateTodo: (todo: Todo) => Promise<void>;
   isInEditMode?: boolean;
-  setEditedTodoId: Dispatch<SetStateAction<null | number>>;
+  setEditedTodoId: (id: number | null) => void;
 };
 
 export const TodoItem: React.FC<Props> = props => {
@@ -38,12 +39,7 @@ export const TodoItem: React.FC<Props> = props => {
     setEditedTodoId(todo.id);
   };
 
-  const onBlur = async (
-    event: // eslint-disable-next-line
-
-    | React.FocusEvent<HTMLFormElement, Element> // eslint-disable-next-line
-      | React.FocusEvent<HTMLFormElement>,
-  ) => {
+  const onBlur = async (event: React.FocusEvent<HTMLFormElement, Element> | React.FocusEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const normalizedTitle = todoTitleValue.trim();

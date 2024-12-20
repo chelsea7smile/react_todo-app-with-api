@@ -4,7 +4,7 @@ import cn from 'classnames';
 
 type Props = {
   onAddTodo: (value: string) => Promise<void>;
-  setErrorMessage: React.Dispatch<React.SetStateAction<ErrorTypes>>;
+  setErrorMessage: (error: ErrorTypes) => void;
   isInputDisabled: boolean;
   areAllTodosCompleted: boolean;
   onToggleAll: () => Promise<void>;
@@ -60,7 +60,6 @@ export const Header: React.FC<Props> = props => {
         />
       )}
 
-      {/* Add a todo on form submit */}
       <form onSubmit={onSubmit}>
         <input
           data-cy="NewTodoField"

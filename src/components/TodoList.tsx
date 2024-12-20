@@ -26,11 +26,7 @@ export const TodoList: React.FC<Props> = props => {
     <section className="todoapp__main" data-cy="TodoList">
       <TransitionGroup>
         {filteredTodos.map(todo => (
-          <CSSTransition
-            key={todo.id}
-            timeout={300}
-            classNames="item"
-          >
+          <CSSTransition key={todo.id} timeout={300} classNames="item">
             <TodoItem
               key={todo.id}
               todo={todo}
@@ -41,23 +37,18 @@ export const TodoList: React.FC<Props> = props => {
               setEditedTodoId={setEditedTodoId}
             />
           </CSSTransition>
-        
-      ))}
-      {tempTodo && (
-        <CSSTransition
-          key={0}
-          timeout={300}
-          classNames="temp-item"
-        >
-          <TodoItem
-            todo={tempTodo}
-            onDeleteTodo={onDeleteTodo}
-            onUpdateTodo={onUpdateTodo}
-            setEditedTodoId={setEditedTodoId}
-            isLoading
-          />
-        </CSSTransition>
-      )}
+        ))}
+        {tempTodo && (
+          <CSSTransition key={0} timeout={300} classNames="temp-item">
+            <TodoItem
+              todo={tempTodo}
+              onDeleteTodo={onDeleteTodo}
+              onUpdateTodo={onUpdateTodo}
+              setEditedTodoId={setEditedTodoId}
+              isLoading
+            />
+          </CSSTransition>
+        )}
       </TransitionGroup>
     </section>
   );
