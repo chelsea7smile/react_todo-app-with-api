@@ -11,8 +11,15 @@ type Props = {
   onClearCompleted: () => Promise<void>;
 };
 
-export const Footer: React.FC<Props> = (props) => {
-  const { filterStatus, setFilterStatus, todosLeft, todosCompleted, onClearCompleted } = props;
+export const Footer: React.FC<Props> = props => {
+  const {
+    filterStatus,
+    setFilterStatus,
+    todosLeft,
+    todosCompleted,
+    onClearCompleted,
+  } = props;
+
   return (
     <footer className="todoapp__footer" data-cy="Footer">
       <span className="todo-count" data-cy="TodosCounter">

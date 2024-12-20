@@ -16,23 +16,42 @@ import { TodoList } from './components/TodoList';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [errorMessage, setErrorMessage] = useState<ErrorTypes>(ErrorTypes.Empty);
-  const [filterStatus, setFilterStatus] = useState<FilterStatus>(FilterStatus.All);
+  const [errorMessage, setErrorMessage] = useState<ErrorTypes>(
+    ErrorTypes.Empty,
+  );
+  const [filterStatus, setFilterStatus] = useState<FilterStatus>(
+    FilterStatus.All,
+  );
   const [tempTodo, setTempTodo] = useState<Todo | null>(null);
   const [loadingTodoIds, setLoadingTodoIds] = useState<number[]>([]);
   const inputAddRef = useRef<HTMLInputElement>(null);
 
+  const filteredTodos = useMemo(
+    () =>
+      todos.filter(todo => {
+        if (filterStatus === FilterStatus.All) {
+          return true;
+        }
 
-  const filteredTodos = useMemo(() => todos.filter(todo => {
-        if (filterStatus === FilterStatus.All) return true;
-        return filterStatus === FilterStatus.Completed ? todo.completed : !todo.completed;
-      }), [todos, filterStatus],
+        return filterStatus === FilterStatus.Completed
+          ? todo.completed
+          : !todo.completed;
+      }),
+    [todos, filterStatus],
   );
-  console.log(filteredTodos, todos);
 
-  const todosLeftNum = useMemo(() => todos.filter(todo => !todo.completed).length, [todos]);
-  const todosCompletedNum = useMemo(() => todos.filter(todo => todo.completed).length, [todos]);
-  const areAllTodosCompleted = useMemo(() => todos.length === todosCompletedNum, [todos]);
+  const todosLeftNum = useMemo(
+    () => todos.filter(todo => !todo.completed).length,
+    [todos],
+  );
+  const todosCompletedNum = useMemo(
+    () => todos.filter(todo => todo.completed).length,
+    [todos],
+  );
+  const areAllTodosCompleted = useMemo(
+    () => todos.length === todosCompletedNum,
+    [todos],
+  );
   const onAddTodo = async (todoTitle: string) => {
     setTempTodo({ id: 0, title: todoTitle, completed: false, userId: USER_ID });
     try {
@@ -63,7 +82,7 @@ export const App: React.FC = () => {
   };
 
   const onClearCompleted = async () => {
-    const completedTodos = todos.filter((todo) => todo.completed);
+    const completedTodos = todos.filter(todo => todo.completed);
 
     completedTodos.forEach(todo => {
       onDeleteTodo(todo.id);

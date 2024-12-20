@@ -5,7 +5,6 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Todo } from '../types/Todo';
 import cn from 'classnames';
 
-
 type Props = {
   todo: Todo;
   isLoading?: boolean;
@@ -25,10 +24,9 @@ export const TodoItem: React.FC<Props> = props => {
     setEditedTodoId,
   } = props;
 
-  const [todoTitleValue, setTodoTitleValue ] = useState(todo.title);
+  const [todoTitleValue, setTodoTitleValue] = useState(todo.title);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
-
 
   const onCheckTodo = () => {
     const todoToUpdate = { ...todo, completed: !todo.completed };
@@ -40,12 +38,20 @@ export const TodoItem: React.FC<Props> = props => {
     setEditedTodoId(todo.id);
   };
 
-  const onBlur = async (event: React.FocusEvent<HTMLFormElement, Element> | React.FocusEvent<HTMLFormElement>) => {
+  const onBlur = async (
+    event: // eslint-disable-next-line
+
+    | React.FocusEvent<HTMLFormElement, Element> // eslint-disable-next-line
+      | React.FocusEvent<HTMLFormElement>,
+  ) => {
     event.preventDefault();
 
     const normalizedTitle = todoTitleValue.trim();
-  
-    if (todo.title === normalizedTitle) return;
+
+    if (todo.title === normalizedTitle) {
+      setEditedTodoId(null);
+      return;
+    }
 
     try {
       if (normalizedTitle === '') {
@@ -55,17 +61,17 @@ export const TodoItem: React.FC<Props> = props => {
       }
 
       setEditedTodoId(null);
-      } catch (error) {
-        inputRef?.current?.focus();
-      }
+    } catch (error) {
+      inputRef?.current?.focus();
     }
+  };
 
-    const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
-      if (event.key === 'Escape') {
-        setEditedTodoId(null);
-        setTodoTitleValue(todo.title);
-      }
-    };
+  const onKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Escape') {
+      setEditedTodoId(null);
+      setTodoTitleValue(todo.title);
+    }
+  };
 
   return (
     <div
@@ -91,11 +97,10 @@ export const TodoItem: React.FC<Props> = props => {
             className="todo__title-field"
             placeholder="Empty todo will be deleted"
             value={todoTitleValue}
-            onChange={(e) => setTodoTitleValue(e.target.value)}
+            onChange={e => setTodoTitleValue(e.target.value)}
             onKeyUp={onKeyUp}
             ref={inputRef}
           />
-          
         </form>
       ) : (
         <>

@@ -13,7 +13,15 @@ type Props = {
 };
 
 export const Header: React.FC<Props> = props => {
-  const { onAddTodo, setErrorMessage, isInputDisabled, todosLength, onToggleAll, inputRef, areAllTodosCompleted } = props;
+  const {
+    onAddTodo,
+    setErrorMessage,
+    isInputDisabled,
+    todosLength,
+    onToggleAll,
+    inputRef,
+    areAllTodosCompleted,
+  } = props;
 
   const [inputValue, setInputValue] = useState('');
 
@@ -36,21 +44,23 @@ export const Header: React.FC<Props> = props => {
   }, [todosLength]);
 
   useEffect(() => {
-    if(!isInputDisabled) inputRef?.current?.focus();
+    if (!isInputDisabled) {
+      inputRef?.current?.focus();
+    }
   }, [isInputDisabled]);
-
 
   return (
     <header className="todoapp__header">
       {todosLength !== 0 && (
         <button
           type="button"
-          className={cn("todoapp__toggle-all", { active: areAllTodosCompleted })}
+          className={cn('todoapp__toggle-all', {
+            active: areAllTodosCompleted,
+          })}
           data-cy="ToggleAllButton"
           onClick={onToggleAll}
         />
       )}
-      
 
       {/* Add a todo on form submit */}
       <form onSubmit={onSubmit}>
