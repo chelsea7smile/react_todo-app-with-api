@@ -8,7 +8,7 @@ type Props = {
   isInputDisabled: boolean;
   areAllTodosCompleted: boolean;
   onToggleAll: () => Promise<void>;
-  todosLength: number;
+  TODOS_LENGTH_VALUE: number;
   inputRef: React.RefObject<HTMLInputElement> | null;
 };
 
@@ -17,7 +17,7 @@ export const Header: React.FC<Props> = props => {
     onAddTodo,
     setErrorMessage,
     isInputDisabled,
-    todosLength,
+    TODOS_LENGTH_VALUE: TODOS_LENGTH_VALUE,
     onToggleAll,
     inputRef,
     areAllTodosCompleted,
@@ -42,14 +42,14 @@ export const Header: React.FC<Props> = props => {
   useEffect(() => {
     if (!isInputDisabled) {
       inputRef?.current?.focus();
-    } else if (todosLength !== undefined) {
+    } else if (!!TODOS_LENGTH_VALUE) {
       inputRef?.current?.focus();
     }
-  }, [todosLength, isInputDisabled]);
+  }, [TODOS_LENGTH_VALUE, isInputDisabled]);
 
   return (
     <header className="todoapp__header">
-      {todosLength !== 0 && (
+      {!!TODOS_LENGTH_VALUE && (
         <button
           type="button"
           className={cn('todoapp__toggle-all', {

@@ -4,11 +4,11 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { ErrorNotification } from './components/ErrorNotification';
 import { Todo } from './types/Todo';
-import {getTodos, addTodo, USER_ID, deleteTodo, updateTodo,} from './api/todos';
+import {getTodos, addTodo, deleteTodo, updateTodo,} from './api/todos';
 import { ErrorTypes } from './types/ErrorTypes';
 import { FilterStatus } from './types/FilterStatus';
 import { TodoList } from './components/TodoList';
-import { use } from 'chai';
+import { USER_ID } from './constatnts/ApiConstants';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -140,7 +140,7 @@ export const App: React.FC = () => {
           isInputDisabled={!!tempTodo}
           onToggleAll={handleToggleAll}
           areAllTodosCompleted={areAllTodosCompleted}
-          todosLength={todos.length}
+          TODOS_LENGTH_VALUE={todos.length}
           inputRef={inputAddRef}
         />
 

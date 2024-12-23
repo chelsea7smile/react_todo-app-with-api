@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable */
 
 import React, { useState } from 'react';
@@ -51,7 +49,7 @@ export const TodoItem: React.FC<Props> = props => {
     }
 
     try {
-      if (normalizedTitle === '') {
+      if (!normalizedTitle.length) {
         await onDeleteTodo(todo.id);
       } else {
         await onUpdateTodo({ ...todo, title: normalizedTitle });
